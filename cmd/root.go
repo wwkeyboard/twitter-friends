@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -24,6 +25,10 @@ import (
 )
 
 var cfgFile string
+var accessToken string
+var accessTokenSecret string
+var consumerKey string
+var consumerSecret string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -57,6 +62,11 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.twitter-friends.yaml)")
 
+	rootCmd.PersistentFlags().StringVar(&accessToken, "access-token", "", "your access token from Twitter")
+	rootCmd.PersistentFlags().StringVar(&accessTokenSecret, "access-token-secret", "", "your access token secret from Twitter")
+	rootCmd.PersistentFlags().StringVar(&consumerKey, "consumer-key", "", "your consumer key from Twitter")
+	rootCmd.PersistentFlags().StringVar(&consumerSecret, "consumer-secret", "", "your consumer secret from Twitter")
+
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
@@ -80,6 +90,8 @@ func initConfig() {
 		viper.SetConfigName(".twitter-friends")
 	}
 
+	viper.SetEnvPrefix("tf")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
