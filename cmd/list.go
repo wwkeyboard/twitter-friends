@@ -28,11 +28,6 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "A list of tweets",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println(accessToken)
-		fmt.Println(accessTokenSecret)
-		fmt.Println(consumerKey)
-		fmt.Println(consumerSecret)
-
 		api := anaconda.NewTwitterApiWithCredentials(
 			accessToken,
 			accessTokenSecret,
