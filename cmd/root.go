@@ -17,7 +17,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -90,12 +89,15 @@ func initConfig() {
 		viper.SetConfigName(".twitter-friends")
 	}
 
-	viper.SetEnvPrefix("tf")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+
+		accessToken = viper.GetString("access-token")
+		accessTokenSecret = viper.GetString("access-token-secret")
+		consumerKey = viper.GetString("consumer-key")
+		consumerSecret = viper.GetString("consumer-secret")
 	}
 }
